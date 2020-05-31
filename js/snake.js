@@ -1,5 +1,6 @@
 'use strict'
 var pause = true;
+var score = 0;
 var game = null;
 var menu = null;
 var currentScene = 0;
@@ -103,8 +104,10 @@ game.paint = function() { //draws canvas & content
     context.fillStyle = '#fff';
     food.fill(context);
 
+    context.fillStyle = '#eae2b7';
+    context.fillText('Score : ' + score, 5, 13);
+
     if(pause) {
-        context.fillStyle = '#eae2b7';
         context.textAlign = 'center';
         context.fillText('Pause', 150, 20);
         context.textAlign = 'left';
@@ -133,6 +136,14 @@ game.act = function() {
             body[i].x = body[i - 1].x;
             body[i].y = body[i - 1].y; 
         }
+        //snake & food intersection
+        if(body[0].intersects(food)) { 
+            body.push(new Rectangle(food.x, food.y, 10, 10)); //adds new rectangle to body
+            score += 1;
+            //moves food rectangle if it collides with the player
+            food.x = random(canvas.width / 10 - 1) * 10;
+            food.y = random(canvas.height / 10 - 1) * 10;
+        }
     }
 }
 
@@ -149,6 +160,18 @@ var Rectangle = function(x, y, width, height) { //rectangle obj
             context.fillRect(this.x, this.y, this.width, this.height);
         }
     }
+
+    this.intersects = function(rect) {
+        if(rect === undefined) {
+            window.console.warn('Missing parameters on function intersects');
+        } else {
+            return(this.x < rect.x + rect.width &&
+                this.x + this.width > rect.x &&
+                this.y < rect.y + rect.height &&
+                this.y + this.height > rect.y);
+        }
+    }
+
 }
 
 window.onload = function() {

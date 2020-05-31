@@ -14,6 +14,7 @@ var keyDown = 40;
 var keyEnter = 13;
 var keySpace = 32;
 var body = [];
+var dir = 0;
 
 
 document.addEventListener('keydown', function(evt) {
@@ -74,6 +75,7 @@ menu.act = function() {
 game = new scene();
 
 game.load = function() {
+    dir = 1;
     body.length = 0;
     body.push(new Rectangle(40, 40, 10, 10));
     body.push(new Rectangle(0, 0, 10, 10));
@@ -87,6 +89,24 @@ game.paint = function() { //draws canvas & content
     context.fillStyle = '#eb452b';
     for(var i = 0; i < body.length; i += 1) {
         body[i].fill(context);
+    }
+}
+
+game.act = function() {
+    //directions
+    if(lastPress === keyUp) {dir = 0}
+    if(lastPress === keyRight) {dir = 1}
+    if(lastPress === keyDown) {dir = 2}
+    if(lastPress === keyLeft) {dir = 3}
+    //head movement
+    if(dir === 0) {body[0].y -= 10}
+    if(dir === 1) {body[0].x += 10}
+    if(dir === 2) {body[0].y += 10}
+    if(dir === 3) {body[0].x -= 10}
+    //body movement (worm-like effect)
+    for(var i = body.length - 1; i > 0; i -= 1) {
+        body[i].x = body[i - 1].x;
+        body[i].y = body[i - 1].y; 
     }
 }
 

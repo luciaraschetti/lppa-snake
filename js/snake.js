@@ -12,7 +12,6 @@ var scenes = [];
 var canvas = null;
 var context = null;
 var lastPress = null;
-var pause = true;
 var keyLeft = 37;
 var keyUp = 38;
 var keyRight = 39;
@@ -148,25 +147,21 @@ game.act = function() {
         //directions
         if(lastPress === keyUp) {
             dir = 0;
-            snake.src = 'assets/bodyv.png';
         }
         if(lastPress === keyRight) {
             dir = 1;
-            snake.src = 'assets/body.png';
         }
         if(lastPress === keyDown) {
             dir = 2;
-            snake.src = 'assets/bodyv.png';
         }
         if(lastPress === keyLeft) {
             dir = 3;
-            snake.src = 'assets/body.png';
         }
         //head movement
-        if(dir === 0) {body[0].y -= 10}
-        if(dir === 1) {body[0].x += 10}
-        if(dir === 2) {body[0].y += 10}
-        if(dir === 3) {body[0].x -= 10}
+        if(dir === 0) {body[0].y -= 10; snake.src = 'assets/bodyv.png';}
+        if(dir === 1) {body[0].x += 10; snake.src = 'assets/body.png';}
+        if(dir === 2) {body[0].y += 10; snake.src = 'assets/bodyv.png';}
+        if(dir === 3) {body[0].x -= 10; snake.src = 'assets/body.png';}
         //body movement (worm-like effect)
         for(var i = body.length - 1; i > 0; i -= 1) {
             body[i].x = body[i - 1].x;

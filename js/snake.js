@@ -154,6 +154,13 @@ game.act = function() {
             body[i].x = body[i - 1].x;
             body[i].y = body[i - 1].y; 
         }
+        //body intersection
+        for(var i = 3; i < body.length; i += 1) {
+            if(body[0]. intersects(body[i])) {
+                gameOver = true;
+                pause = true;
+            }
+        }
         //snake & food intersection
         if(body[0].intersects(food)) { 
             //adds new rectangle to body

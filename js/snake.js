@@ -15,12 +15,17 @@ var keyDown = 40;
 var keyEnter = 13;
 var keySpace = 32;
 var body = [];
+var food = null;
 var dir = 0;
 
 
 document.addEventListener('keydown', function(evt) {
     lastPress = evt.which;
 }, false);
+
+var random = function(max) {
+    return ~~(Math.random() * max);
+}
 
 var scene = function() {
     this.id = scenes.length;
@@ -81,6 +86,9 @@ game.load = function() {
     body.push(new Rectangle(40, 40, 10, 10));
     body.push(new Rectangle(0, 0, 10, 10));
     body.push(new Rectangle(0, 0, 10, 10));
+    //randomized food position
+    food.x = random(canvas.width / 10 - 1) * 10;
+    food.y = random(canvas.height / 10 - 1) * 10;
 }
 
 game.paint = function() { //draws canvas & content
@@ -91,6 +99,9 @@ game.paint = function() { //draws canvas & content
     for(var i = 0; i < body.length; i += 1) {
         body[i].fill(context);
     }
+
+    context.fillStyle = '#fff';
+    food.fill(context);
 
     if(pause) {
         context.fillStyle = '#eae2b7';
@@ -143,6 +154,7 @@ var Rectangle = function(x, y, width, height) { //rectangle obj
 window.onload = function() {
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
+    food = new Rectangle(80, 80, 10, 10);
     run();
     repaint();
 }

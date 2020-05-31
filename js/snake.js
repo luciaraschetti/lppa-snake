@@ -151,7 +151,8 @@ game.act = function() {
         }
         //snake & food intersection
         if(body[0].intersects(food)) { 
-            body.push(new Rectangle(food.x, food.y, 10, 10)); //adds new rectangle to body
+            //adds new rectangle to body
+            body.push(new Rectangle(food.x, food.y, 10, 10));
             score += 1;
             //moves food rectangle if it collides with the player
             food.x = random(canvas.width / 10 - 1) * 10;
@@ -159,20 +160,27 @@ game.act = function() {
         }
         //walls intersection
         for(var i = 0; i < walls.length; i += 1) {
-            if(food.intersects(walls[i])) { //moves food rectangle if it collides with a wall
+            //moves food rectangle if it collides with a wall
+            if(food.intersects(walls[i])) { 
                 food.x = random(snakeCanvas.width / 10 - 1) * 10;
                 food.y = random(snakeCanvas.height / 10 - 1) * 10;
             }
-
-            if(body[0].intersects(walls[i])) { //game over when snake collides with a wall
+            //game over when snake collides with a wall
+            if(body[0].intersects(walls[i])) {
                 pause = true;
                 gameOver = true;
             }
         }
+        //canvas limits
+        if( body[0].x > canvas.width - body[0].width) {body[0].x = 0;}
+        if(body[0].x < 0) {body[0].x = canvas.width - body[0].width;}
+        if(body[0].y > canvas.height - body[0].height) {body[0].y = 0;}
+        if(body[0].y < 0) {body[0].y = canvas.height - body[0].height;}
     }
 }
 
-var Rectangle = function(x, y, width, height) { //rectangle obj 
+//rectangle obj 
+var Rectangle = function(x, y, width, height) { 
     this.x = (x === undefined) ? 0 : x;
     this.y = (y === undefined) ? 0 : y;
     this.width = (width === undefined) ? 0 : width;

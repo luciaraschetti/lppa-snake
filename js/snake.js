@@ -19,6 +19,9 @@ var keySpace = 32;
 var body = [];
 var walls = [];
 var food = null;
+var star = new Image();
+var quack = new Audio();
+var chomp = new Audio();
 var dir = 0;
 
 
@@ -107,8 +110,7 @@ game.paint = function() { //draws canvas & content
         body[i].fill(context);
     }
 
-    context.fillStyle = '#fff';
-    food.fill(context);
+    context.drawImage(star, food.x, food.y);
 
     context.fillStyle = '#11393f';
     for(var i = 0; i < walls.length; i += 1) {
@@ -157,12 +159,16 @@ game.act = function() {
         //body intersection
         for(var i = 3; i < body.length; i += 1) {
             if(body[0]. intersects(body[i])) {
+                //plays dying sound
+                quack.play();
                 gameOver = true;
                 pause = true;
             }
         }
         //snake & food intersection
         if(body[0].intersects(food)) { 
+            //plays eating sound
+            chomp.play();
             //adds new rectangle to body
             body.push(new Rectangle(food.x, food.y, 10, 10));
             score += 1;
@@ -179,6 +185,8 @@ game.act = function() {
             }
             //game over when snake collides with a wall
             if(body[0].intersects(walls[i])) {
+                //plays dying sound
+                quack.play();
                 pause = true;
                 gameOver = true;
             }
@@ -219,6 +227,16 @@ var Rectangle = function(x, y, width, height) {
 
 }
 
+//browser compatibility
+window.requestAnimationFrame = (function() {
+    return window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    function(callback) {
+        window.setTimeout(callback, 17);
+    }
+}());
+
 window.onload = function() {
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
@@ -229,6 +247,11 @@ window.onload = function() {
     walls.push(new Rectangle(145, 45, 10, 35));
     walls.push(new Rectangle(270, 100, 10, 30));
     walls.push(new Rectangle(220, 110, 50, 10));
+    quack.src = 'assets/quack.oga';
+    quack.volume = 0.1;
+    chomp.src = 'assets/chomp.oga';
+    chomp.volume = 0.1;
+    star.src = 'assets/star.png';
     run();
     repaint();
 }

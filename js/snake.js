@@ -1,4 +1,5 @@
 'use strict'
+var pause = true;
 var game = null;
 var menu = null;
 var currentScene = 0;
@@ -90,23 +91,37 @@ game.paint = function() { //draws canvas & content
     for(var i = 0; i < body.length; i += 1) {
         body[i].fill(context);
     }
+
+    if(pause) {
+        context.fillStyle = '#eae2b7';
+        context.textAlign = 'center';
+        context.fillText('Pause', 150, 20);
+        context.textAlign = 'left';
+    }
 }
 
 game.act = function() {
-    //directions
-    if(lastPress === keyUp) {dir = 0}
-    if(lastPress === keyRight) {dir = 1}
-    if(lastPress === keyDown) {dir = 2}
-    if(lastPress === keyLeft) {dir = 3}
-    //head movement
-    if(dir === 0) {body[0].y -= 10}
-    if(dir === 1) {body[0].x += 10}
-    if(dir === 2) {body[0].y += 10}
-    if(dir === 3) {body[0].x -= 10}
-    //body movement (worm-like effect)
-    for(var i = body.length - 1; i > 0; i -= 1) {
-        body[i].x = body[i - 1].x;
-        body[i].y = body[i - 1].y; 
+    //pause
+    if(lastPress === keyEnter) {
+        pause =! pause;
+        lastPress = null;
+    }
+    if(!pause){
+        //directions
+        if(lastPress === keyUp) {dir = 0}
+        if(lastPress === keyRight) {dir = 1}
+        if(lastPress === keyDown) {dir = 2}
+        if(lastPress === keyLeft) {dir = 3}
+        //head movement
+        if(dir === 0) {body[0].y -= 10}
+        if(dir === 1) {body[0].x += 10}
+        if(dir === 2) {body[0].y += 10}
+        if(dir === 3) {body[0].x -= 10}
+        //body movement (worm-like effect)
+        for(var i = body.length - 1; i > 0; i -= 1) {
+            body[i].x = body[i - 1].x;
+            body[i].y = body[i - 1].y; 
+        }
     }
 }
 

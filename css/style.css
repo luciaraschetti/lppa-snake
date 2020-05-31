@@ -39,8 +39,31 @@ h2 {
 #canvas {
     height: 320px;
     max-width: 100%;
-    justify-self: stretch;
-    margin: 30px 0;
+    margin: 30px 0 20px 0;
     border-radius: 18px;
     background-color: #ffc;
+}
+
+#awards {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 25%;
+    border-radius: 25px;
+    background-color: #ffffff85;
+    border: 2px solid #d35628cb;
+}
+
+#awards ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#awards ul li {
+    margin: 5px 0;
+    padding: 10px 30px;
+    color: #c59688;
 }

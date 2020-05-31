@@ -63,7 +63,8 @@ var run = function() {
 
 menu = new scene();
 
-menu.paint = function(context) { //draws canvas & content
+menu.paint = function(context) {
+    //draws canvas & content
     context.fillStyle = '#1f7380';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -75,7 +76,8 @@ menu.paint = function(context) { //draws canvas & content
 };
 
 menu.act = function() {
-    if(lastPress === keyEnter) { //switches to 'game' scene when pressing enter
+    //switches to 'game' scene when pressing enter
+    if(lastPress === keyEnter) {
         loadScene(game);
         lastPress = null;
     }
@@ -84,6 +86,7 @@ menu.act = function() {
 game = new scene();
 
 game.load = function() {
+    score = 0;
     dir = 1;
     body.length = 0;
     body.push(new Rectangle(40, 10, 10, 10));
@@ -107,6 +110,7 @@ game.paint = function() { //draws canvas & content
     context.fillStyle = '#fff';
     food.fill(context);
 
+    context.fillStyle = '#11393f';
     for(var i = 0; i < walls.length; i += 1) {
         walls[i].fill(context);
     }
@@ -117,7 +121,8 @@ game.paint = function() { //draws canvas & content
     if(pause) {
         context.textAlign = 'center';
         if(gameOver) {
-            context.fillText('Game Over', 150, 80);
+            context.fillStyle = '#941f0d';
+            context.fillText('Game Over', 150, 95);
         } else {
             context.fillText('Pause', 150, 20);
         }

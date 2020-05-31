@@ -1,6 +1,7 @@
 'use strict'
 var pause = true;
 var score = 0;
+var gameOver = true;
 var game = null;
 var menu = null;
 var currentScene = 0;
@@ -16,6 +17,7 @@ var keyDown = 40;
 var keyEnter = 13;
 var keySpace = 32;
 var body = [];
+var walls = [];
 var food = null;
 var dir = 0;
 
@@ -84,12 +86,13 @@ game = new scene();
 game.load = function() {
     dir = 1;
     body.length = 0;
-    body.push(new Rectangle(40, 40, 10, 10));
+    body.push(new Rectangle(40, 10, 10, 10));
     body.push(new Rectangle(0, 0, 10, 10));
     body.push(new Rectangle(0, 0, 10, 10));
     //randomized food position
     food.x = random(canvas.width / 10 - 1) * 10;
     food.y = random(canvas.height / 10 - 1) * 10;
+    gameOver = false;
 }
 
 game.paint = function() { //draws canvas & content
@@ -104,12 +107,20 @@ game.paint = function() { //draws canvas & content
     context.fillStyle = '#fff';
     food.fill(context);
 
+    for(var i = 0; i < walls.length; i += 1) {
+        walls[i].fill(context);
+    }
+
     context.fillStyle = '#eae2b7';
     context.fillText('Score : ' + score, 5, 13);
 
     if(pause) {
         context.textAlign = 'center';
-        context.fillText('Pause', 150, 20);
+        if(gameOver) {
+            context.fillText('Game Over', 150, 80);
+        } else {
+            context.fillText('Pause', 150, 20);
+        }
         context.textAlign = 'left';
     }
 }
@@ -121,6 +132,8 @@ game.act = function() {
         lastPress = null;
     }
     if(!pause){
+        //reset game
+        if(gameOver) {loadScene(menu);}
         //directions
         if(lastPress === keyUp) {dir = 0}
         if(lastPress === keyRight) {dir = 1}
@@ -143,6 +156,18 @@ game.act = function() {
             //moves food rectangle if it collides with the player
             food.x = random(canvas.width / 10 - 1) * 10;
             food.y = random(canvas.height / 10 - 1) * 10;
+        }
+        //walls intersection
+        for(var i = 0; i < walls.length; i += 1) {
+            if(food.intersects(walls[i])) { //moves food rectangle if it collides with a wall
+                food.x = random(snakeCanvas.width / 10 - 1) * 10;
+                food.y = random(snakeCanvas.height / 10 - 1) * 10;
+            }
+
+            if(body[0].intersects(walls[i])) { //game over when snake collides with a wall
+                pause = true;
+                gameOver = true;
+            }
         }
     }
 }
@@ -178,6 +203,12 @@ window.onload = function() {
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
     food = new Rectangle(80, 80, 10, 10);
+    walls.push(new Rectangle(30, 100, 10, 30));
+    walls.push(new Rectangle(40, 110, 50, 10));
+    walls.push(new Rectangle(125, 35, 50, 10));
+    walls.push(new Rectangle(145, 45, 10, 35));
+    walls.push(new Rectangle(270, 100, 10, 30));
+    walls.push(new Rectangle(220, 110, 50, 10));
     run();
     repaint();
 }

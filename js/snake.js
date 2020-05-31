@@ -145,18 +145,10 @@ game.act = function() {
         //reset game
         if(gameOver) {loadScene(menu);}
         //directions
-        if(lastPress === keyUp) {
-            dir = 0;
-        }
-        if(lastPress === keyRight) {
-            dir = 1;
-        }
-        if(lastPress === keyDown) {
-            dir = 2;
-        }
-        if(lastPress === keyLeft) {
-            dir = 3;
-        }
+        if(lastPress === keyUp) {dir = 0;}
+        if(lastPress === keyRight) {dir = 1;}
+        if(lastPress === keyDown) {dir = 2;}
+        if(lastPress === keyLeft) {dir = 3;}
         //head movement
         if(dir === 0) {body[0].y -= 10; snake.src = 'assets/bodyv.png';}
         if(dir === 1) {body[0].x += 10; snake.src = 'assets/body.png';}

@@ -49,8 +49,6 @@ h2 {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    max-width: 25%;
     border-radius: 25px;
     background-color: #ffffff85;
     border: 2px solid #d35628cb;
@@ -60,6 +58,8 @@ h2 {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 #awards ul li {

@@ -13,6 +13,7 @@ var keyRight = 39;
 var keyDown = 40;
 var keyEnter = 13;
 var keySpace = 32;
+var body = [];
 
 
 document.addEventListener('keydown', function(evt) {
@@ -52,7 +53,7 @@ var run = function() {
 
 menu = new scene();
 
-menu.paint = function(context) {
+menu.paint = function(context) { //draws canvas & content
     context.fillStyle = '#1f7380';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -62,6 +63,47 @@ menu.paint = function(context) {
     context.fillText('SNAKE GAME', 150, 60);
     context.fillText('Press Enter', 150, 90);
 };
+
+menu.act = function() {
+    if(lastPress === keyEnter) { //switches to 'game' scene when pressing enter
+        loadScene(game);
+        lastPress = null;
+    }
+};
+
+game = new scene();
+
+game.load = function() {
+    body.length = 0;
+    body.push(new Rectangle(40, 40, 10, 10));
+    body.push(new Rectangle(0, 0, 10, 10));
+    body.push(new Rectangle(0, 0, 10, 10));
+}
+
+game.paint = function() { //draws canvas & content
+    context.fillStyle = '#1f7380';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.fillStyle = '#eb452b';
+    for(var i = 0; i < body.length; i += 1) {
+        body[i].fill(context);
+    }
+}
+
+var Rectangle = function(x, y, width, height) { //rectangle obj 
+    this.x = (x === undefined) ? 0 : x;
+    this.y = (y === undefined) ? 0 : y;
+    this.width = (width === undefined) ? 0 : width;
+    this.height = (height === undefined) ? this.width : height;
+
+    this.fill = function(context) {
+        if(context === undefined) {
+            window.console.warn('Missing parameters on function fill');
+        } else {
+            context.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+}
 
 window.onload = function() {
     canvas = document.getElementById('canvas');

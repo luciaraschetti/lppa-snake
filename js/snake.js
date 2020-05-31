@@ -1,7 +1,10 @@
 'use strict'
+
 var pause = true;
 var score = 0;
 var gameOver = true;
+var points = null;
+var emojis = null;
 var game = null;
 var menu = null;
 var currentScene = 0;
@@ -172,6 +175,13 @@ game.act = function() {
             //adds new rectangle to body
             body.push(new Rectangle(food.x, food.y, 10, 10));
             score += 1;
+            //scoreboard
+            for(var i = 0; i < points.length; i++) {
+                if(score == points[i].innerHTML) {
+                    points[i].setAttribute('style', 'display: none');
+                    emojis[i].setAttribute('style', 'display: inline');
+                }
+            }
             //moves food rectangle if it collides with the player
             food.x = random(canvas.width / 10 - 1) * 10;
             food.y = random(canvas.height / 10 - 1) * 10;
@@ -180,8 +190,8 @@ game.act = function() {
         for(var i = 0; i < walls.length; i += 1) {
             //moves food rectangle if it collides with a wall
             if(food.intersects(walls[i])) { 
-                food.x = random(snakeCanvas.width / 10 - 1) * 10;
-                food.y = random(snakeCanvas.height / 10 - 1) * 10;
+                food.x = random(canvas.width / 10 - 1) * 10;
+                food.y = random(canvas.height / 10 - 1) * 10;
             }
             //game over when snake collides with a wall
             if(body[0].intersects(walls[i])) {
@@ -240,6 +250,8 @@ window.requestAnimationFrame = (function() {
 window.onload = function() {
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
+    points = document.getElementsByClassName('points');
+    emojis = document.getElementsByClassName('emoji');
     food = new Rectangle(80, 80, 10, 10);
     walls.push(new Rectangle(30, 100, 10, 30));
     walls.push(new Rectangle(40, 110, 50, 10));

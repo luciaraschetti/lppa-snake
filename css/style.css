@@ -67,3 +67,9 @@ h2 {
     padding: 10px 30px;
     color: #c59688;
 }
+
+.emoji {
+    display: none;
+    margin: 5px 0;
+    padding: 10px 30px;
+}

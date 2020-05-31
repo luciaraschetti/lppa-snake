@@ -22,6 +22,7 @@ var keySpace = 32;
 var body = [];
 var walls = [];
 var food = null;
+var snake = new Image();
 var star = new Image();
 var quack = new Audio();
 var chomp = new Audio();
@@ -104,13 +105,13 @@ game.load = function() {
     gameOver = false;
 }
 
-game.paint = function() { //draws canvas & content
+//draws canvas & content
+game.paint = function() { 
     context.fillStyle = '#1f7380';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    context.fillStyle = '#eb452b';
     for(var i = 0; i < body.length; i += 1) {
-        body[i].fill(context);
+        context.drawImage(snake, body[i].x, body[i].y);
     }
 
     context.drawImage(star, food.x, food.y);
@@ -145,10 +146,22 @@ game.act = function() {
         //reset game
         if(gameOver) {loadScene(menu);}
         //directions
-        if(lastPress === keyUp) {dir = 0}
-        if(lastPress === keyRight) {dir = 1}
-        if(lastPress === keyDown) {dir = 2}
-        if(lastPress === keyLeft) {dir = 3}
+        if(lastPress === keyUp) {
+            dir = 0;
+            snake.src = 'assets/bodyv.png';
+        }
+        if(lastPress === keyRight) {
+            dir = 1;
+            snake.src = 'assets/body.png';
+        }
+        if(lastPress === keyDown) {
+            dir = 2;
+            snake.src = 'assets/bodyv.png';
+        }
+        if(lastPress === keyLeft) {
+            dir = 3;
+            snake.src = 'assets/body.png';
+        }
         //head movement
         if(dir === 0) {body[0].y -= 10}
         if(dir === 1) {body[0].x += 10}
@@ -263,6 +276,7 @@ window.onload = function() {
     quack.volume = 0.1;
     chomp.src = 'assets/chomp.oga';
     chomp.volume = 0.1;
+    snake.src = 'assets/body.png'
     star.src = 'assets/star.png';
     run();
     repaint();
